@@ -1,0 +1,14 @@
+xdebug/*
+# VSCode
+.vscode
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+# Mac/OSX
+.DS_Store
+# Environments
+.env*
+docker-compose.yml
+docker-compose.yaml

@@ -1,0 +1,93 @@
+version: "3.8"
+services:
+  apache:
+    container_name: apache
+    build: ./docker/apache
+    links:
+      - php
+    ports:
+      - 80:80
+    volumes:
+      - ${WORK_DIR}/src:/usr/local/apache2/htdocs
+  php:
+    container_name: php
+    build: 
+      context: ./docker/php
+      args:
+        - XDEBUG_MODES=${XDEBUG_MODES}
+        - REMOTE_HOST=host.docker.internal
+        # Linux and windows under WSL
+        # - REMOTE_HOST=${host.docker.internal:host-gateway} # Host machine IP
+        - REMOTE_PORT=${REMOTE_PORT} # IDE/Editor's listener port
+        - IDE_KEY=${IDE_KEY}
+    environment:
+      ENVIRONMENT: ${ENVIRONMENT}
+      DBENGINE_HOST: db
+      DBENGINE_DATABASE: ${DB_DATABASE}
+      DBENGINE_USER: ${DB_USER}
+      DBENGINE_PASSWORD: ${DB_PASSWORD}
+      MONGODB_USERNAME: ${MONGODB_USERNAME}
+      MONGODB_PASSWORD: ${MONGODB_PASSWORD}
+      MONGODB_DATABASE: ${MONGODB_DATABASE}
+      MONGODB_COLLECTION: ${MONGODB_COLLECTION}
+    ports:
+      - "9000:9000"
+    working_dir: /usr/local/apache2/htdocs
+    volumes:
+      - ${WORK_DIR}/src:/usr/local/apache2/htdocs
+      - ${WORK_DIR}/xdebug:/tmp/xdebug
+  db:
+    container_name: sqldb
+    build: 
+      context: ./docker/db
+      args:
+        - DB_ENGINE
+    ports:
+      - 3306:3306
+    volumes:
+      - sqldb:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: pma
+    links:
+      - db
+      - mongo
+    environment:
+      PMA_HOST: db
+      PMA_ARBITRARY: 1
+    restart: always
+    ports:
+      - 8085:80
+  mongo:
+    image: mongo:4.4.14
+    container_name: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+    restart: unless-stopped
+    ports:
+      - 27017:27017
+    volumes:
+      - mongodb:/data/db
+  mongo-express:
+    image: mongo-express:0.54.0
+    container_name: mexpress
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: ${ME_CONFIG_MONGODB_ADMINUSERNAME}
+      ME_CONFIG_MONGODB_ADMINPASSWORD: ${ME_CONFIG_MONGODB_ADMINPASSWORD}
+      ME_CONFIG_MONGODB_SERVER: ${ME_CONFIG_MONGODB_SERVER}
+    depends_on:
+      - mongo
+    restart: unless-stopped
+    ports:
+      - 8081:8081
+
+volumes:
+  sqldb:
+  mongodb:
