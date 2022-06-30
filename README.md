@@ -43,4 +43,4 @@ Only requisite is to run it on a command line ./startup-script.sh
 Restricting PHP version forced to also set up versions for xdebug and mongodb because of drivers compatibility.  
 Volumes were created since it isolated filesystem ownership and avoided issues.   
 The platform you use to build matters, some docker images don't exist for M1 silicon chipset, like mysql.   
-Abstracting OS is quite tricky, since there are a lot of conditions to catch, eg: OS version prerequisites, docker and docker-compose versions per build version.
+Abstracting OS is quite tricky, since there are a lot of conditions to catch, eg: OS version prerequisites, docker and docker-compose versions per OS build version.
