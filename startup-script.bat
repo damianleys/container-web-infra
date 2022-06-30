@@ -11,12 +11,13 @@ if Not "%~1" == "dev" if Not "%~1" == "prod" (
     goto help
 )
 
-if Not exist "%CD%.env.%~1" (
+echo "Checking file %CD%\.env.%~1"
+if Not exist "%CD%\.env.%~1" (
     echo "WARNING: environment file not found"
     echo "NOTICE: will try configuration variables from environment"
 ) else (
     echo "Configured for %~1 environment"
-    set CONFIG_FILE="--env-file=.env.%~1"
+    set CONFIG_FILE=--env-file .env.%~1
 )
 
 if Not exist "%CD%/docker-compose-mysql.yml" (
@@ -24,7 +25,7 @@ if Not exist "%CD%/docker-compose-mysql.yml" (
     echo "===================================================="
     goto help
 )
-ren docker-compose-mysql.yml docker-compose.yml 
+copy "%CD%\docker-compose-mysql.yml" "%CD%\docker-compose.yml" 
 
 goto main
 
@@ -44,7 +45,7 @@ set WORK_DIR=%CD%
 
 echo "Starting docker-compose"
 echo "Building up %~1 environment"
-set COMMAND="docker-compose %CONFIG_FILE% up --build --remove-orphans"
+set COMMAND="docker-compose %CONFIG_FILE% up build --remove-orphans"
 echo %COMMAND%
 docker-compose %CONFIG_FILE% up --build --remove-orphans
 

@@ -54,4 +54,4 @@ echo "Starting docker-compose"
 COMMAND="docker-compose ${CONFIG_FILE} up --build --remove-orphans"
 
 echo $COMMAND
-docker-compose ${CONFIG_FILE} up --build --remove-orphans
+eval $COMMAND

@@ -21,7 +21,7 @@ Should be possible to build dev and prod version:
 ## Setting up your environment  
    
 ### Pre-requisites
-Having docker-compose installed.  
+Having docker-compose installed and support docker-compose 3.8 version files.   
 Set your .env.dev or .env.prod files with the required variables or export them to the environment (either windows or linux-like). Use the .DUMMYenv.dev file as base.  
 Startup script should be executable, if it is not already.
 
@@ -42,3 +42,4 @@ Only requisite is to run it on a command line ./startup-script.sh
 Restricting PHP version forced to also set up versions for xdebug and mongodb because of drivers compatibility.  
 Volumes were created since it isolated filesystem ownership and avoided issues.
 The platform you use to build matters, some docker images don't exist for M1 silicon chipset, like mysql.
+Abstracting OS is quite tricky, since there are a lot of conditions to catch, eg: OS version prerequisites, docker and docker-compose versions per build version.
