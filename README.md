@@ -27,7 +27,8 @@ Startup script should be executable, if it is not already.
 
 ### Startup script
 This script handles the working directory environment variable, which differs between linux-like and windows PCs (to ensure filesystem mappings).  
-Validates parameters, checks docker-compose file exists, and finally, it gets the arch to do either mariadb or mysql (mysql and arm don't mix so good). For that, it will make a copy of the corresponding compose configuration file with the correct environment keys for the chosen DB engine.
+Validates parameters, checks docker-compose file exists, and finally, it gets the arch to do either mariadb or mysql (mysql and arm don't mix so good).   
+For that, it will make a copy of the corresponding compose configuration file with the correct environment keys for the chosen DB engine.   
 After doing that check it just starts docker-compose with a few recommended parameters for this project.  
 
 
@@ -40,6 +41,6 @@ Only requisite is to run it on a command line ./startup-script.sh
 
 ## Conclusion
 Restricting PHP version forced to also set up versions for xdebug and mongodb because of drivers compatibility.  
-Volumes were created since it isolated filesystem ownership and avoided issues.
-The platform you use to build matters, some docker images don't exist for M1 silicon chipset, like mysql.
+Volumes were created since it isolated filesystem ownership and avoided issues.   
+The platform you use to build matters, some docker images don't exist for M1 silicon chipset, like mysql.   
 Abstracting OS is quite tricky, since there are a lot of conditions to catch, eg: OS version prerequisites, docker and docker-compose versions per build version.
