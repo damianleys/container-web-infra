@@ -10,10 +10,10 @@ Containers:
 Simple application to connect to both SQLs, read data and display it.
 
 Constraints:
-Build either in windows or in mac computers.
-Configuration variables should be injected.
-No schema nor script specification.
-Should be possible to build dev and prod version:
+Build either in windows or in mac computers.   
+Configuration variables should be injected.   
+No schema nor script specification.    
+Should be possible to build dev and prod version:     
 - with xdebug turned on/off
 - with php error reporting, tracking, displaying
   
